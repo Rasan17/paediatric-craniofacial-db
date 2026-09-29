@@ -1,0 +1,52 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Paediatric-Craniofacial-DB",
+  "version": "1.0.0",
+  "identifier": "com.paediatriccraniofacial.database",
+  "build": {
+    "beforeBuildCommand": "node build.js",
+    "beforeDevCommand": "node build.js",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "Multidisciplinary Paediatric Craniofacial DB — Dr G Narenthiran",
+        "width": 1420,
+        "height": 940,
+        "minWidth": 1050,
+        "minHeight": 720,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "category": "Medical",
+    "shortDescription": "Multidisciplinary Paediatric Craniofacial Registry",
+    "longDescription": "Specialized clinical and research database for simple and complex craniosynostosis, syndromic anomalies, morphometric Cephalic Index evaluation, open and spring-assisted cranioplasties, redo surgeries, and multidisciplinary MDT inputs.",
+    "copyright": "Copyright 2026, Dr G Narenthiran, g_narenthiran@hotmail.com, all rights reserved.",
+    "macOS": {
+      "minimumSystemVersion": "10.13"
+    },
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
+    }
+  }
+}

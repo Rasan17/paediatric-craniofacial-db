@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multidisciplinary Paediatric Craniofacial DB — Dr G Narenthiran</title>
+  <meta name="description" content="Dedicated Clinical Registry & Research Database for Simple & Complex Craniosynostosis and Craniofacial Anomalies" />
+  
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+  <!-- App Shell -->
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header class="top-nav">
+      <div class="nav-brand">
+        <div class="brand-icon" style="background:linear-gradient(135deg, #0ea5e9, #6366f1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">Multidisciplinary Paediatric Craniofacial DB</h1>
+          <p class="brand-subtitle">Dr G Narenthiran &bull; Dedicated to Mrs Nirmaladevy Ganesalingam BSc</p>
+        </div>
+      </div>
+
+      <!-- Header Center Status -->
+      <div class="nav-center-status">
+        <span id="active-patient-header-badge" class="badge-status-banner">Loading Registry...</span>
+      </div>
+
+      <!-- Header Controls -->
+      <div class="nav-actions">
+        <!-- Letters Generator -->
+        <button id="btn-open-discharge-modal" class="btn btn-outline btn-sm" title="Generate Inpatient Discharge Summary">
+          Discharge Letter
+        </button>
+        <button id="btn-open-clinic-modal" class="btn btn-outline btn-sm" title="Generate Outpatient Clinic Letter">
+          Clinic Letter
+        </button>
+
+        <!-- Export Dropdown / Buttons -->
+        <div class="btn-group">
+          <button id="btn-export-stata" class="btn btn-outline btn-sm" title="Export Stata .dta dataset">
+            Stata (.dta)
+          </button>
+          <button id="btn-export-excel" class="btn btn-outline btn-sm" title="Export Excel / CSV">
+            Excel
+          </button>
+          <button id="btn-export-json" class="btn btn-outline btn-sm" title="Backup JSON">
+            JSON
+          </button>
+        </div>
+
+        <!-- Database Settings -->
+        <button id="btn-db-ops" class="btn btn-outline btn-sm" title="Database Backup & Reset">
+          DB Tools
+        </button>
+        <button id="btn-db-design" class="btn btn-outline btn-sm" title="Database Architecture">
+          DB Schema
+        </button>
+        <button id="btn-audit-log" class="btn btn-outline btn-sm" title="Audit Ledger">
+          Audit
+        </button>
+        <button id="btn-about-info" class="btn btn-outline btn-sm" title="About & Attribution">
+          About
+        </button>
+
+        <!-- Theme Toggle -->
+        <button id="btn-theme-toggle" class="btn-icon" title="Toggle Light / Dark Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <!-- User Role Profile Menu -->
+        <div class="user-menu-wrapper" style="position:relative;">
+          <button id="btn-user-menu-trigger" class="btn btn-primary btn-sm user-btn">
+            <span id="current-user-role">CLINICIAN</span>: <span id="current-user-name">User</span>
+            <span class="caret-down">&blacktriangledown;</span>
+          </button>
+          <div id="user-menu-dropdown" class="user-dropdown-menu" style="display:none;">
+            <div class="user-dropdown-header">
+              <div class="font-bold" id="dropdown-full-name">Clinical User</div>
+              <div class="text-xs text-muted">Role-Based Access</div>
+            </div>
+            <hr class="dropdown-divider" />
+            <button class="dropdown-item" id="btn-trigger-change-password">Change Password</button>
+            <button class="dropdown-item" id="btn-trigger-user-mgmt">User Accounts</button>
+            <hr class="dropdown-divider" />
+            <button class="dropdown-item text-danger" id="btn-trigger-logout">Sign Out</button>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="workspace-layout">
+      
+      <!-- Left Sidebar: Patient Directory -->
+      <aside class="sidebar-panel">
+        <div class="sidebar-header">
+          <div class="sidebar-search">
+            <input type="text" id="search-patient" placeholder="Search Study ID, name, suture, syndrome..." class="form-control form-control-sm" />
+          </div>
+          <button id="btn-new-patient" class="btn btn-primary btn-sm btn-block mt-2">
+            + New Craniofacial Patient
+          </button>
+        </div>
+
+        <div class="patient-list" id="patients-list-container">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Sticky Sidebar Bottom Actions -->
+        <div class="sidebar-footer">
+          <button id="btn-save-patient" class="btn btn-success btn-sm btn-block">
+            Save Patient Record
+          </button>
+          <button id="btn-delete-patient" class="btn btn-outline btn-sm btn-block text-danger mt-1">
+            Delete Patient
+          </button>
+        </div>
+      </aside>
+
+      <!-- Center Main Tabs & Form Body -->
+      <main class="main-content-panel">
+        
+        <!-- Tab Navigation Bar -->
+        <div class="tabs-nav-bar">
+          <button class="tab-btn active" data-tab="tab-demographics">1. Demographics & Perinatal</button>
+          <button class="tab-btn" data-tab="tab-pathology">2. Pathology & Genetics</button>
+          <button class="tab-btn" data-tab="tab-preop">3. Preoperative Assessment & CI</button>
+          <button class="tab-btn" data-tab="tab-surgeries">4. Surgeries (Open / Spring / Redo)</button>
+          <button class="tab-btn" data-tab="tab-outcomes">5. Craniofacial Outcomes & Satisfaction</button>
+          <button class="tab-btn" data-tab="tab-neurosurg">6. Neurosurgery MDT</button>
+          <button class="tab-btn" data-tab="tab-cranio-plastics">7. Craniofacial / Plastics MDT</button>
+          <button class="tab-btn" data-tab="tab-genetics">8. Clinical Genetics MDT</button>
+          <button class="tab-btn" data-tab="tab-neuropsych">9. Neuropsychology MDT</button>
+          <button class="tab-btn" data-tab="tab-other-mdt">10. Speech, Eye & Airway MDT</button>
+          <button class="tab-btn" data-tab="tab-cohort">11. Cohort Analytics</button>
+        </div>
+
+        <!-- Tab 1: Demographics & Perinatal History -->
+        <div class="tab-content active" id="tab-demographics">
+          <div class="card p-4">
+            <h3 class="section-title">Patient Demographics & Perinatal History</h3>
+            <div class="form-grid grid-cols-3">
+              <div class="form-group">
+                <label for="f-study-id">Study Identifier*</label>
+                <input type="text" id="f-study-id" class="form-control" required placeholder="e.g. CF-001" />
+              </div>
+              <div class="form-group">
+                <label for="f-hospital-number">Hospital MRN</label>
+                <input type="text" id="f-hospital-number" class="form-control" placeholder="NHS / Hospital Number" />
+              </div>
+              <div class="form-group">
+                <label for="f-gender">Gender</label>
+                <select id="f-gender" class="form-control">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                  <option value="Unknown">Unknown</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="f-first-name">First Name</label>
+                <input type="text" id="f-first-name" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="f-last-name">Last Name</label>
+                <input type="text" id="f-last-name" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="f-dob">Date of Birth</label>
+                <input type="date" id="f-dob" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label for="f-age-at-presentation-months">Age at Presentation (Months)</label>
+                <input type="number" step="0.1" id="f-age-at-presentation-months" class="form-control" placeholder="e.g. 4.5" />
+              </div>
+              <div class="form-group">
+                <label for="f-ethnicity">Ethnicity</label>
+                <input type="text" id="f-ethnicity" class="form-control" placeholder="e.g. White British / Asian" />
+              </div>
+              <div class="form-group">
+                <label for="f-gestational-age-weeks">Gestational Age (Weeks)</label>
+                <input type="number" step="0.1" id="f-gestational-age-weeks" class="form-control" placeholder="e.g. 39.5" />
+              </div>
+
+              <div class="form-group">
+                <label for="f-birth-weight-kg">Birth Weight (kg)</label>
+                <input type="number" step="0.01" id="f-birth-weight-kg" class="form-control" placeholder="e.g. 3.4" />
+              </div>
+              <div class="form-group">
+                <label for="f-head-circumference-at-birth-cm">OFC at Birth (cm)</label>
+                <input type="number" step="0.1" id="f-head-circumference-at-birth-cm" class="form-control" placeholder="e.g. 35.0" />
+              </div>
+              <div class="form-group">
+                <label for="f-clinical-nurse-specialist">Craniofacial CNS</label>
+                <input type="text" id="f-clinical-nurse-specialist" class="form-control" placeholder="Named Keyworker / CNS" />
+              </div>
+
+              <div class="form-group">
+                <label for="f-lead-neurosurgeon">Lead Paediatric Neurosurgeon</label>
+                <input type="text" id="f-lead-neurosurgeon" class="form-control" value="Dr G Narenthiran" />
+              </div>
+              <div class="form-group">
+                <label for="f-lead-craniofacial-surgeon">Lead Craniofacial Surgeon</label>
+                <input type="text" id="f-lead-craniofacial-surgeon" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="f-lead-plastic-surgeon">Lead Plastic Surgeon</label>
+                <input type="text" id="f-lead-plastic-surgeon" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group mt-3">
+              <label for="f-notes">Clinical Presentation & Referral Summary</label>
+              <textarea id="f-notes" class="form-control" rows="3" placeholder="Summary of referral source, initial concerns by parents/health visitor, and presenting head shape..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Craniofacial Pathology & Genetics -->
+        <div class="tab-content" id="tab-pathology">
+          <div class="card p-4">
+            <h3 class="section-title">Underlying Craniofacial Pathology & Molecular Genetics</h3>
+            <div class="form-grid grid-cols-2">
+              
+              <div class="form-group">
+                <label for="f-primary-diagnostic-category">Primary Diagnostic Category*</label>
+                <select id="f-primary-diagnostic-category" class="form-control">
+                  <option value="Single-Suture Craniosynostosis (Non-Syndromic)">Single-Suture Craniosynostosis (Non-Syndromic)</option>
+                  <option value="Multi-Suture Craniosynostosis (Non-Syndromic)">Multi-Suture Craniosynostosis (Non-Syndromic)</option>
+                  <option value="Syndromic Craniosynostosis">Syndromic Craniosynostosis</option>
+                  <option value="Craniofacial Cleft (Tessier)">Craniofacial Cleft (Tessier)</option>
+                  <option value="Craniofacial Encephalocoele">Craniofacial Encephalocoele</option>
+                  <option value="Hypertelorism / Orbital Dystopia">Hypertelorism / Orbital Dystopia</option>
+                  <option value="Deformational / Positional Plagiocephaly">Deformational / Positional Plagiocephaly</option>
+                  <option value="Other Craniofacial Anomaly">Other Craniofacial Anomaly</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="f-primary-suture-involved">Primary Suture(s) Involved*</label>
+                <select id="f-primary-suture-involved" class="form-control">
+                  <option value="Sagittal (Scaphocephaly / Dolichocephaly)">Sagittal (Scaphocephaly / Dolichocephaly)</option>
+                  <option value="Metopic (Trigonocephaly)">Metopic (Trigonocephaly)</option>
+                  <option value="Unilateral Coronal - Right (Anterior Plagiocephaly)">Unilateral Coronal - Right (Anterior Plagiocephaly)</option>
+                  <option value="Unilateral Coronal - Left (Anterior Plagiocephaly)">Unilateral Coronal - Left (Anterior Plagiocephaly)</option>
+                  <option value="Bicoronal (Brachycephaly / Turricephaly)">Bicoronal (Brachycephaly / Turricephaly)</option>
+                  <option value="Unilateral Lambdoid - Right (Posterior Plagiocephaly)">Unilateral Lambdoid - Right (Posterior Plagiocephaly)</option>
+                  <option value="Unilateral Lambdoid - Left (Posterior Plagiocephaly)">Unilateral Lambdoid - Left (Posterior Plagiocephaly)</option>
+                  <option value="Bilateral Lambdoid">Bilateral Lambdoid</option>
+                  <option value="Squamosal">Squamosal</option>
+                  <option value="Pan-Synostosis (Cloverleaf / Kleeblattschaedel)">Pan-Synostosis (Cloverleaf / Kleeblattschaedel)</option>
+                  <option value="None / Not Applicable">None / Not Applicable</option>
+                  <option value="Other Complex Combination">Other Complex Combination</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="f-syndromic-diagnosis">Syndromic Classification</label>
+                <select id="f-syndromic-diagnosis" class="form-control">
+                  <option value="Non-Syndromic (Isolated)">Non-Syndromic (Isolated)</option>
+                  <option value="Crouzon Syndrome">Crouzon Syndrome</option>
+                  <option value="Apert Syndrome">Apert Syndrome</option>
+                  <option value="Pfeiffer Syndrome (Type 1)">Pfeiffer Syndrome (Type 1)</option>
+                  <option value="Pfeiffer Syndrome (Type 2 / Cloverleaf)">Pfeiffer Syndrome (Type 2 / Cloverleaf)</option>
+                  <option value="Pfeiffer Syndrome (Type 3)">Pfeiffer Syndrome (Type 3)</option>
+                  <option value="Saethre-Chotzen Syndrome">Saethre-Chotzen Syndrome</option>
+                  <option value="Muenke Syndrome">Muenke Syndrome</option>
+                  <option value="Craniofrontonasal Dysplasia (CFND)">Craniofrontonasal Dysplasia (CFND)</option>
+                  <option value="Carpenter Syndrome">Carpenter Syndrome</option>
+                  <option value="Jackson-Weiss Syndrome">Jackson-Weiss Syndrome</option>
+                  <option value="Antley-Bixler Syndrome">Antley-Bixler Syndrome</option>
+                  <option value="Opitz G/BBB Syndrome">Opitz G/BBB Syndrome</option>
+                  <option value="Cleidocranial Dysplasia">Cleidocranial Dysplasia</option>
+                  <option value="Under Investigation / Suspected Syndrome">Under Investigation / Suspected Syndrome</option>
+                  <option value="Other Rare Syndrome">Other Rare Syndrome</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="f-genetic-testing-performed">Genetic Testing Performed?</label>
+                <select id="f-genetic-testing-performed" class="form-control">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Planned / In Progress">Planned / In Progress</option>
+                  <option value="Declined">Declined</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="f-specific-gene-identified">Specific Gene Mutation Identified</label>
+                <select id="f-specific-gene-identified" class="form-control">
+                  <option value="Negative / No Pathogenic Variant Found">Negative / No Pathogenic Variant Found</option>
+                  <option value="FGFR2">FGFR2 (Crouzon / Apert / Pfeiffer)</option>
+                  <option value="FGFR3">FGFR3 (Muenke / Crouzon with Acanthosis)</option>
+                  <option value="FGFR1">FGFR1 (Pfeiffer Type 1)</option>
+                  <option value="TWIST1">TWIST1 (Saethre-Chotzen)</option>
+                  <option value="EFNB1">EFNB1 (Craniofrontonasal Dysplasia)</option>
+                  <option value="TCF12">TCF12 (Coronal Synostosis)</option>
+                  <option value="ERF">ERF (Multi-suture / Raised ICP)</option>
+                  <option value="SMAD6">SMAD6 (Sagittal / Metopic)</option>
+                  <option value="RAB23">RAB23 (Carpenter)</option>
+                  <option value="ALX1 / ALX3 / ALX4">ALX1 / ALX3 / ALX4 (Frontonasal)</option>
+                  <option value="POR">POR (Antley-Bixler)</option>
+                  <option value="RUNX2">RUNX2 (Cleidocranial)</option>
+                  <option value="Variant of Uncertain Significance (VUS)">Variant of Uncertain Significance (VUS)</option>
+                  <option value="Not Tested / Pending">Not Tested / Pending</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="f-inheritance-pattern">Inheritance Pattern</label>
+                <select id="f-inheritance-pattern" class="form-control">
+                  <option value="De Novo">De Novo (Sporadic mutation)</option>
+                  <option value="Autosomal Dominant - Maternal">Autosomal Dominant - Maternal</option>
+                  <option value="Autosomal Dominant - Paternal">Autosomal Dominant - Paternal</option>
+                  <option value="Autosomal Recessive">Autosomal Recessive</option>
+                  <option value="X-Linked Dominant">X-Linked Dominant</option>
+                  <option value="Unknown / Under Evaluation">Unknown / Under Evaluation</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid grid-cols-2 mt-3">
+              <div class="form-group">
+                <label for="f-dna-mutation-details">DNA Mutation & Amino Acid Change</label>
+                <input type="text" id="f-dna-mutation-details" class="form-control" placeholder="e.g. c.1026C>G, p.Cys342Tyr in exon 8" />
+              </div>
+              <div class="form-group">
+                <label for="f-genetic-testing-modality">Testing Modality / Platform</label>
+                <input type="text" id="f-genetic-testing-modality" class="form-control" placeholder="e.g. NextGen Craniofacial Sequencing Panel + Array CGH" />
+              </div>
+            </div>
+
+            <div class="form-group mt-3">
+              <label for="f-suture-details-text">Anatomical & Suture Pathology Notes</label>
+              <textarea id="f-suture-details-text" class="form-control" rows="2" placeholder="Specific anatomical extent of fusion, calvarial asymmetry, skull base involvement..."></textarea>
+            </div>
+            <div class="form-group mt-2">
+              <label for="f-family-history-craniofacial">Family Pedigree & Craniofacial History</label>
+              <textarea id="f-family-history-craniofacial" class="form-control" rows="2" placeholder="Affected first/second-degree relatives, parental head shape, previous pregnancy losses..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Preoperative Assessment & Morphometry -->
+        <div class="tab-content" id="tab-preop">
+          <div class="card p-4">
+            <h3 class="section-title">Preoperative Craniofacial Assessment, Morphometry & Risk Stratification</h3>
+            
+            <!-- Morphometry & Cephalic Index Reactive Calculator Card -->
+            <div class="card p-3 border rounded mb-3" style="background:rgba(14,165,233,0.06); border-color:var(--accent-csf);">
+              <div class="flex-between items-center mb-2">
+                <h4 class="text-sm font-bold text-csf uppercase">Cranial Morphometry & Cephalic Index Engine</h4>
+                <div id="badge-preop-ci-metric" class="score-badge badge-secondary">Enter Width & Length</div>
+              </div>
+              <div class="form-grid grid-cols-4">
+                <div class="form-group">
+                  <label for="f-cranial-length-mm">Cranial Length (A-P, mm)*</label>
+                  <input type="number" step="0.5" id="f-cranial-length-mm" class="form-control" placeholder="e.g. 170" />
+                </div>
+                <div class="form-group">
+                  <label for="f-cranial-width-mm">Cranial Width (Biparietal, mm)*</label>
+                  <input type="number" step="0.5" id="f-cranial-width-mm" class="form-control" placeholder="e.g. 115" />
+                </div>
+                <div class="form-group">
+                  <label for="f-cephalic-index">Calculated Cephalic Index (CI %)</label>
+                  <input type="text" id="f-cephalic-index" class="form-control font-bold" readonly />
+                </div>
+                <div class="form-group">
+                  <label for="f-cephalic-index-category">CI Morphometric Category</label>
+                  <input type="text" id="f-cephalic-index-category" class="form-control font-semibold" readonly />
+                </div>
+              </div>
+              <div class="text-xs text-muted mt-1">
+                Normal Mesocephaly: 75.0 - 80.0% &bull; Scaphocephaly/Dolichocephaly: &lt;75.0% &bull; Brachycephaly: 80.1 - 85.0% &bull; Hyperbrachycephaly: &gt;85.0%
+              </div>
+            </div>
+
+            <!-- Preop General Measurements -->
+            <div class="form-grid grid-cols-4 mb-3">
+              <div class="form-group">
+                <label for="f-preop-assessment-date">Assessment Date</label>
+                <input type="date" id="f-preop-assessment-date" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="f-preop-weight-kg">Weight (kg)*</label>
+                <input type="number" step="0.1" id="f-preop-weight-kg" class="form-control" placeholder="e.g. 7.5" />
+              </div>
+              <div class="form-group">
+                <label for="f-preop-head-circumference-cm">OFC (cm)</label>
+                <input type="number" step="0.1" id="f-preop-head-circumference-cm" class="form-control" placeholder="e.g. 43.0" />
+              </div>
+              <div class="form-group">
+                <label for="f-preop-head-circumference-centile">OFC Centile (%)</label>
+                <input type="number" step="0.5" id="f-preop-head-circumference-centile" class="form-control" placeholder="e.g. 50" />
+              </div>
+            </div>
+
+            <!-- Craniofacial Dysmorphology & Asymmetry -->
+            <h4 class="text-xs font-semibold uppercase text-secondary mb-2">Vault, Facial & Orbital Dysmorphology</h4>
+            <div class="form-grid grid-cols-3 mb-3">
+              <div class="form-group">
+                <label for="f-cranial-vault-asymmetry-index-pct">Cranial Vault Asymmetry Index (CVAI %)</label>
+                <input type="number" step="0.1" id="f-cranial-vault-asymmetry-index-pct" class="form-control" placeholder="e.g. 5.5" />
+              </div>
+              <div class="form-group">
+                <label for="f-intercanthal-distance-mm">Intercanthal Distance (mm)</label>
+                <input type="number" step="0.5" id="f-intercanthal-distance-mm" class="form-control" placeholder="e.g. 22.0" />
+              </div>
+              <div class="form-group">
+                <label for="f-interpupillary-distance-mm">Interpupillary Distance (mm)</label>
+                <input type="number" step="0.5" id="f-interpupillary-distance-mm" class="form-control" placeholder="e.g. 44.0" />
+              </div>
+
+              <div class="form-group">
+                <label for="f-anterior-fontanelle-status">Anterior Fontanelle Status</label>
+                <select id="f-anterior-fontanelle-status" class="form-control">
+                  <option value="Patent">Patent / Soft</option>
+                  <option value="Prematurely Closed">Prematurely Closed / Obliterated</option>
+                  <option value="Bulging / Tense">Bulging / Tense (Raised ICP Alert)</option>
+                  <option value="Small / Constricted">Small / Constricted</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="f-suture-ridging-palpable">Palpable Suture Ridging</label>
+                <input type="text" id="f-suture-ridging-palpable" class="form-control" placeholder="e.g. Sagittal keel ridge / Metopic ridge" />
+              </div>
+              <div class="form-group">
+                <label for="f-bitemporal-narrowing">Bitemporal Narrowing / Pinching</label>
+                <input type="text" id="f-bitemporal-narrowing" class="form-control" placeholder="e.g. Marked bitemporal pinching" />
+              </div>
+
+              <div class="form-group">
+                <label for="f-forehead-bossing-or-retrusion">Forehead Bossing / Retrusion</label>
+                <input type="text" id="f-forehead-bossing-or-retrusion" class="form-control" placeholder="e.g. Supraorbital retrusion with frontal bossing" />
+              </div>
+              <div class="form-group">
+                <label for="f-orbital-dystopia-harlequin">Orbital Dystopia / Harlequin Orbit</label>
+                <input type="text" id="f-orbital-dystopia-harlequin" class="form-control" placeholder="e.g. Left Harlequin orbit elevation / Hypotelorism" />
+              </div>
+              <div class="form-group">
+                <label for="f-exorbitism-proptosis-present">Exorbitism / Proptosis</label>
+                <select id="f-exorbitism-proptosis-present" class="form-control">
+                  <option value="No">No</option>
+                  <option value="Yes - Mild">Yes - Mild</option>
+                  <option value="Yes - Moderate">Yes - Moderate</option>
+                  <option value="Yes - Severe">Yes - Severe (Corneal Exposure Risk)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Raised ICP, Airway & Neuro-Anatomy Card -->
+            <h4 class="text-xs font-semibold uppercase text-secondary mb-2">Raised Intracranial Pressure & Airway Severity</h4>
+            <div class="form-grid grid-cols-3 mb-3">
+              <div class="form-group">
+                <label for="f-raised-icp-clinical-signs">Clinical Signs of Raised ICP</label>
+                <input type="text" id="f-raised-icp-clinical-signs" class="form-control" placeholder="e.g. Irritability, morning vomiting, bulging" />
+              </div>
+              <div class="form-group">
+                <label for="f-copper-beaten-skull-on-imaging">Copper-Beaten Skull (CT/X-ray)</label>
+                <select id="f-copper-beaten-skull-on-imaging" class="form-control">
+                  <option value="None">None</option>
+                  <option value="Mild / Focal">Mild / Focal</option>
+                  <option value="Moderate">Moderate</option>
+                  <option value="Severe Pan-Calvarial">Severe Pan-Calvarial (Raised ICP Indicator)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="f-frisen-papilloedema-grade">Papilloedema / Frisen Grade</label>
+                <select id="f-frisen-papilloedema-grade" class="form-control">
+                  <option value="Grade 0: Normal">Grade 0: Normal Optic Disc</option>
+                  <option value="Grade 1: C-shaped Halo">Grade 1: C-shaped Halo</option>
+                  <option value="Grade 2: Circumferential Halo">Grade 2: Circumferential Halo</option>
+                  <option value="Grade 3: Moderate Papilloedema">Grade 3: Moderate Papilloedema</option>
+                  <option value="Grade 4: Marked Papilloedema">Grade 4: Marked Papilloedema</option>
+                  <option value="Grade 5: Severe Papilloedema">Grade 5: Severe Papilloedema</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="f-ahi-apnea-hypopnea-index">Sleep Study AHI (events/hr)</label>
+                <input type="number" step="0.1" id="f-ahi-apnea-hypopnea-index" class="form-control" placeholder="e.g. 4.5" />
+              </div>
+              <div class="form-group">
+                <label for="f-ahi-severity">AHI Sleep Apnea Severity</label>
+                <input type="text" id="f-ahi-severity" class="form-control font-semibold" readonly />
+              </div>
+              <div class="form-group">
+                <label for="f-respiratory-support-needed">Respiratory Support Needed</label>
+                <select id="f-respiratory-support-needed" class="form-control">
+                  <option value="None">None</option>
+                  <option value="High-Flow Oxygen">High-Flow Oxygen</option>
+                  <option value="Nocturnal CPAP">Nocturnal CPAP</option>
+                  <option value="BiPAP">BiPAP</option>
+                  <option value="Tracheostomy">Tracheostomy</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="f-chiari-malformation-present">Chiari I Malformation?</label>
+                <select id="f-chiari-malformation-present" class="form-control">
+                  <option value="No">No</option>
+                  <option value="Yes">Yes (Tonsillar Herniation)</option>
+                  <option value="Borderline (2-4 mm)">Borderline (2-4 mm)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="f-tonsillar-descent-mm">Tonsillar Descent Below FM (mm)</label>
+                <input type="number" step="0.5" id="f-tonsillar-descent-mm" class="form-control" placeholder="e.g. 5.0" />
+              </div>
+              <div class="form-group">
+                <label for="f-hydrocephalus-present">Hydrocephalus / Ventriculomegaly</label>
+                <select id="f-hydrocephalus-present" class="form-control">
+                  <option value="No">No (Normal Ventricles)</option>
+                  <option value="Compensated Ventriculomegaly">Compensated Ventriculomegaly</option>
+                  <option value="Active Progressive Hydrocephalus">Active Progressive Hydrocephalus</option>
+                  <option value="Shunted Hydrocephalus">Shunted Hydrocephalus</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Tab 4: Surgeries (Primary, Redo, Spring, Endoscopy, Helmet) -->
+        <div class="tab-content" id="tab-surgeries">
+          <div class="card p-4">
+            <div class="flex-between items-center mb-3">
+              <div>
+                <h3 class="section-title mb-0">Surgical Procedures & Operative Log</h3>
+                <p class="text-xs text-muted">Supports Open Vault Remodeling, Minimally Invasive, Spring-Assisted, Endoscopy, Helmet & Redo Surgeries</p>
+              </div>
+              <button id="btn-add-surgery" class="btn btn-primary btn-sm">
+                + Log Surgical Procedure
+              </button>
+            </div>
+
+            <!-- Surgeries Child Table -->
+            <div class="table-responsive">
+              <table class="data-table" id="table-surgeries">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Procedure Sequence</th>
+                    <th>Technique Category</th>
+                    <th>Lead Surgeon</th>
+                    <th>Duration</th>
+                    <th>EBL & %EBV</th>
+                    <th>Transfusions</th>
+                    <th>Dural Tear</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-surgeries">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 5: Craniofacial Outcomes, Complications & Satisfaction -->
+        <div class="tab-content" id="tab-outcomes">
+          <div class="card p-4">
+            <h3 class="section-title">Longitudinal Craniofacial Outcomes, Complications & Parent Satisfaction</h3>
+
+            <!-- Whitaker Classification Card -->
+            <div class="card p-3 border rounded mb-3" style="background:rgba(99,102,241,0.06); border-color:var(--accent-purple);">
+              <div class="flex-between items-center mb-2">
+                <h4 class="text-sm font-bold text-purple uppercase">Whitaker Classification of Craniofacial Outcomes</h4>
+                <div id="badge-whitaker-metric" class="score-badge badge-secondary">Select Whitaker Grade</div>
+              </div>
+              <div class="form-group mb-2">
+                <label for="f-whitaker-classification">Whitaker Category*</label>
+                <select id="f-whitaker-classification" class="form-control font-semibold">
+                  <option value="Category I: No further surgical revision considered advisable or desired">Category I: No further surgical revision considered advisable or desired</option>
+                  <option value="Category II: Minor surgical revisions of contour or soft tissue">Category II: Minor surgical revisions of contour or soft tissue</option>
+                  <option value="Category III: Major bone graft or repeat osteotomy (less than original)">Category III: Major bone graft or repeat osteotomy (less than original)</option>
+                  <option value="Category IV: Major craniofacial reoperation duplicating original extent">Category IV: Major craniofacial reoperation duplicating original extent (Redo Surgery)</option>
+                </select>
+              </div>
+              <div class="text-xs text-muted" id="whitaker-recommendation-text">
+                Category I: Optimal structural result. Category II: Soft tissue/contour touchup. Category III: Secondary osteotomy. Category IV: Duplicating initial surgery.
+              </div>
+            </div>
+
+            <!-- Postoperative Morphometry & CI -->
+            <h4 class="text-xs font-semibold uppercase text-secondary mb-2">Postoperative Cranial Vault Symmetry & Cephalic Index</h4>
+            <div class="form-grid grid-cols-4 mb-3">
+              <div class="form-group">
+                <label for="f-postop-cranial-length-mm">Post-op Length (mm)</label>
+                <input type="number" step="0.5" id="f-postop-cranial-length-mm" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="f-postop-cranial-width-mm">Post-op Width (mm)</label>
+                <input type="number" step="0.5" id="f-postop-cranial-width-mm" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="f-postop-cephalic-index">Post-op Cephalic Index (%)</label>
+                <input type="text" id="f-postop-cephalic-index" class="form-control font-bold" readonly />
+              </div>
+              <div class="form-group">
+                <label for="f-cephalic-index-improvement">&Delta;CI Improvement (%)</label>
+                <input type="text" id="f-cephalic-index-improvement" class="form-control font-bold text-success" readonly />
+              </div>
+
+              <div class="form-group">
+                <label for="f-head-shape-aesthetic-correction">Head Shape Aesthetic Correction</label>
+                <select id="f-head-shape-aesthetic-correction" class="form-control">
+                  <option value="Excellent">Excellent</option>
+                  <option value="Good">Good</option>
+                  <option value="Satisfactory">Satisfactory</option>
+                  <option value="Poor / Under-corrected">Poor / Under-corrected</option>
+                  <option value="Over-corrected">Over-corrected</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="f-forehead-symmetry-restored">Forehead Symmetry Restored</label>
+                <input type="text" id="f-forehead-symmetry-restored" class="form-control" placeholder="e.g. Symmetrical frontal contour" />
+              </div>
+              <div class="form-group">
+                <label for="f-supraorbital-rim-projection">Supraorbital Rim Projection</label>
+                <input type="text" id="f-supraorbital-rim-projection" class="form-control" placeholder="e.g. Normal projection maintained" />
+              </div>
+              <div class="form-group">
+                <label for="f-overall-clinical-status">Overall Clinical Status</label>
+                <select id="f-overall-clinical-status" class="form-control">
+                  <option value="Completed Treatment - Excellent Result">Completed Treatment - Excellent Result</option>
+                  <option value="Under Routine Clinical Follow-up">Under Routine Clinical Follow-up</option>
+                  <option value="Awaiting Second-Stage / Redo Surgery">Awaiting Second-Stage / Redo Surgery</option>
+                  <option value="Under Active Helmet Therapy">Under Active Helmet Therapy</option>
+                  <option value="Under Observation">Under Observation</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Parent Satisfaction / PROM Card -->
+            <div class="card p-3 border rounded mb-3" style="background:rgba(5,150,105,0.06); border-color:var(--accent-success);">
+              <h4 class="text-sm font-bold text-success uppercase mb-2">Parent-Reported Outcome Measures (PROM) & Satisfaction</h4>
+              <div class="form-grid grid-cols-4">
+                <div class="form-group">
+                  <label for="f-parent-overall-satisfaction-score">Overall Satisfaction (1-5 Stars)*</label>
+                  <select id="f-parent-overall-satisfaction-score" class="form-control font-bold">
+                    <option value="5">5 Stars - Extremely Satisfied</option>
+                    <option value="4">4 Stars - Very Satisfied</option>
+                    <option value="3">3 Stars - Satisfied / Neutral</option>
+                    <option value="2">2 Stars - Dissatisfied</option>
+                    <option value="1">1 Star - Very Dissatisfied</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="f-parent-head-shape-satisfaction">Head Shape Satisfaction</label>
+                  <select id="f-parent-head-shape-satisfaction" class="form-control">
+                    <option value="Very Satisfied">Very Satisfied</option>
+                    <option value="Satisfied">Satisfied</option>
+                    <option value="Neutral">Neutral</option>
+                    <option value="Dissatisfied">Dissatisfied</option>
+                    <option value="Very Dissatisfied">Very Dissatisfied</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="f-parent-facial-appearance-satisfaction">Facial / Eye Appearance</label>
+                  <select id="f-parent-facial-appearance-satisfaction" class="form-control">
+                    <option value="Very Satisfied">Very Satisfied</option>
+                    <option value="Satisfied">Satisfied</option>
+                    <option value="Neutral">Neutral</option>
+                    <option value="Dissatisfied">Dissatisfied</option>
+                    <option value="Very Dissatisfied">Very Dissatisfied</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="f-parent-would-recommend-procedure">Would Recommend to Family?</label>
+                  <select id="f-parent-would-recommend-procedure" class="form-control">
+                    <option value="Strongly Agree">Strongly Agree</option>
+                    <option value="Agree">Agree</option>
+                    <option value="Unsure">Unsure</option>
+                    <option value="Disagree">Disagree</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Complications -->
+            <h4 class="text-xs font-semibold uppercase text-secondary mb-2">Complications, CSF Leaks & Secondary Reoperations</h4>
+            <div class="form-grid grid-cols-3">
+              <div class="form-group">
+                <label for="f-complication-dural-tear-or-csf-leak">Dural Tear / CSF Leak*</label>
+                <select id="f-complication-dural-tear-or-csf-leak" class="form-control">
+                  <option value="None">None</option>
+                  <option value="Intraoperative Dural Tear (Repaired)">Intraoperative Dural Tear (Repaired)</option>
+                  <option value="Postoperative CSF Leak">Postoperative CSF Leak</option>
+                  <option value="Pseudomeningocele / Subgaleal Collection">Pseudomeningocele / Subgaleal Collection</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="f-complication-wound-infection">Surgical Site Infection</label>
+                <select id="f-complication-wound-infection" class="form-control">
+                  <option value="None">None</option>
+                  <option value="Superficial Surgical Site Infection">Superficial Surgical Site Infection</option>
+                  <option value="Deep Infection / Bone Flap Osteomyelitis">Deep Infection / Bone Flap Osteomyelitis</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="f-complication-bone-resorption">Bone Flap Resorption</label>
+                <select id="f-complication-bone-resorption" class="form-control">
+                  <option value="None">None</option>
+                  <option value="Minor Palpable Irregularity">Minor Palpable Irregularity</option>
+                  <option value="Major Resorption / Cranial Defect">Major Resorption / Cranial Defect</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="f-complication-hardware-problem">Hardware Problems</label>
+                <select id="f-complication-hardware-problem" class="form-control">
+                  <option value="None">None</option>
+                  <option value="Palpable Plates">Palpable Plates</option>
+                  <option value="Hardware Extrusion / Exposure">Hardware Extrusion / Exposure</option>
+                  <option value="Hardware Infection">Hardware Infection</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="f-complication-resynostosis-recurrence">Re-synostosis Recurrence</label>
+                <select id="f-complication-resynostosis-recurrence" class="form-control">
+                  <option value="No">No</option>
+                  <option value="Yes - Required Redo Surgery">Yes - Required Redo Surgery</option>
+                  <option value="Yes - Managed Conservatively">Yes - Managed Conservatively</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="f-complication-unplanned-reoperation-30d">Unplanned 30-Day Reoperation</label>
+                <input type="text" id="f-complication-unplanned-reoperation-30d" class="form-control" placeholder="e.g. No / Wound debridement" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Tab 6: Neurosurgery MDT -->
+        <div class="tab-content" id="tab-neurosurg">
+          <div class="card p-4">
+            <div class="flex-between items-center mb-3">
+              <div>
+                <h3 class="section-title mb-0">Paediatric Neurosurgery Assessment & Follow-up</h3>
+                <p class="text-xs text-muted">Evaluation of ICP, fontanelle tension, papilloedema, Chiari malformation, and CSF dynamics</p>
+              </div>
+              <button id="btn-add-neurosurg" class="btn btn-primary btn-sm">
+                + Log Neurosurgery Assessment
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Encounter Phase</th>
+                    <th>Clinician</th>
+                    <th>ICP Evaluation</th>
+                    <th>Papilloedema</th>
+                    <th>Chiari Position</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-mdt-neurosurg">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 7: Craniofacial & Plastic Surgery MDT -->
+        <div class="tab-content" id="tab-cranio-plastics">
+          <div class="card p-4">
+            <div class="flex-between items-center mb-3">
+              <div>
+                <h3 class="section-title mb-0">Craniofacial & Plastic Surgery Assessment & Follow-up</h3>
+                <p class="text-xs text-muted">Evaluation of supraorbital contour, bandeau advancement, midface retrusion, and soft tissue healing</p>
+              </div>
+              <button id="btn-add-cranio" class="btn btn-primary btn-sm">
+                + Log Craniofacial / Plastics Assessment
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Encounter Phase</th>
+                    <th>Clinician</th>
+                    <th>Forehead & Bandeau Contour</th>
+                    <th>Midface Projection</th>
+                    <th>Whitaker Estimate</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-mdt-cranio">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 8: Clinical Genetics MDT -->
+        <div class="tab-content" id="tab-genetics">
+          <div class="card p-4">
+            <div class="flex-between items-center mb-3">
+              <div>
+                <h3 class="section-title mb-0">Clinical Genetics Assessment & Family Counseling</h3>
+                <p class="text-xs text-muted">Syndromic evaluation, dysmorphology examination, gene variant interpretation, and recurrence risks</p>
+              </div>
+              <button id="btn-add-genetics" class="btn btn-primary btn-sm">
+                + Log Genetics Consultation
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Geneticist</th>
+                    <th>Syndromic Impression</th>
+                    <th>Dysmorphology Features</th>
+                    <th>Counseling & Recurrence Risk</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-mdt-genetics">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 9: Neuropsychology MDT -->
+        <div class="tab-content" id="tab-neuropsych">
+          <div class="card p-4">
+            <div class="flex-between items-center mb-3">
+              <div>
+                <h3 class="section-title mb-0">Neuropsychology & Developmental Assessment</h3>
+                <p class="text-xs text-muted">Longitudinal cognitive milestones, Bayley/WPPSI/WISC quotients, motor development, and parental bonding</p>
+              </div>
+              <button id="btn-add-neuropsych" class="btn btn-primary btn-sm">
+                + Log Neuropsychology Assessment
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Phase</th>
+                    <th>Neuropsychologist</th>
+                    <th>Battery</th>
+                    <th>DQ / IQ Score</th>
+                    <th>Motor & Adaptive Skills</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-mdt-neuropsych">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 10: Speech, Ophthalmology & Airway MDT -->
+        <div class="tab-content" id="tab-other-mdt">
+          <div class="card p-4 mb-3">
+            <div class="flex-between items-center mb-2">
+              <h4 class="section-title mb-0">Speech & Language Therapy (SLT)</h4>
+              <button id="btn-add-speech" class="btn btn-primary btn-xs">+ Add SLT Entry</button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Therapist</th>
+                    <th>Feeding / Swallowing</th>
+                    <th>Velopharyngeal Competence (VPI)</th>
+                    <th>Hypernasality & Speech</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-mdt-speech"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card p-4 mb-3">
+            <div class="flex-between items-center mb-2">
+              <h4 class="section-title mb-0">Paediatric Ophthalmology</h4>
+              <button id="btn-add-ophthalmology" class="btn btn-primary btn-xs">+ Add Ophthalmology Entry</button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Ophthalmologist</th>
+                    <th>Visual Acuity</th>
+                    <th>Strabismus (V-Pattern)</th>
+                    <th>Exorbitism (Hertel mm)</th>
+                    <th>Optic Nerve OCT</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-mdt-ophthalmology"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card p-4">
+            <div class="flex-between items-center mb-2">
+              <h4 class="section-title mb-0">ENT & Respiratory / Sleep Medicine</h4>
+              <button id="btn-add-airway" class="btn btn-primary btn-xs">+ Add Airway Entry</button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Specialist</th>
+                    <th>Upper Airway Patency</th>
+                    <th>AHI Score</th>
+                    <th>CPAP / Tracheostomy</th>
+                    <th>Plan</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-mdt-airway"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 11: Cohort Analytics -->
+        <div class="tab-content" id="tab-cohort">
+          <div class="card p-4">
+            <h3 class="section-title">Craniofacial Registry Cohort Analytics</h3>
+            <p class="text-xs text-muted mb-3">Comprehensive epidemiological, surgical technique, Cephalic Index, and Whitaker outcome distributions</p>
+
+            <!-- Metrics Summary Cards -->
+            <div class="metrics-grid mb-4">
+              <div class="metric-card">
+                <div class="metric-label">Total Patients</div>
+                <div class="metric-value text-csf" id="card-cohort-total">0</div>
+                <div class="metric-sub">Registered cases</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Total Surgeries</div>
+                <div class="metric-value text-main" id="card-cohort-surgeries">0</div>
+                <div class="metric-sub">Craniofacial procedures</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Redo / Revision Rate</div>
+                <div class="metric-value text-warning" id="card-cohort-redo-rate">0%</div>
+                <div class="metric-sub">Secondary operations</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Mean Pre-op CI</div>
+                <div class="metric-value text-purple" id="card-cohort-pre-ci">-</div>
+                <div class="metric-sub">Cephalic index baseline</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Mean Post-op CI</div>
+                <div class="metric-value text-success" id="card-cohort-post-ci">-</div>
+                <div class="metric-sub">Corrected cephalic index</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Parent Satisfaction</div>
+                <div class="metric-value text-success" id="card-cohort-sat">-</div>
+                <div class="metric-sub">Out of 5 Stars</div>
+              </div>
+            </div>
+
+            <!-- Distribution Tables -->
+            <div class="form-grid grid-cols-3">
+              <div class="card p-3 border">
+                <h4 class="text-xs font-bold uppercase text-secondary mb-2">Sutures Involved</h4>
+                <div class="table-responsive">
+                  <table class="data-table text-xs">
+                    <thead><tr><th>Suture</th><th>Cases</th><th>%</th></tr></thead>
+                    <tbody id="tbody-cohort-sutures"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="card p-3 border">
+                <h4 class="text-xs font-bold uppercase text-secondary mb-2">Surgical Techniques</h4>
+                <div class="table-responsive">
+                  <table class="data-table text-xs">
+                    <thead><tr><th>Technique</th><th>Count</th><th>%</th></tr></thead>
+                    <tbody id="tbody-cohort-techniques"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="card p-3 border">
+                <h4 class="text-xs font-bold uppercase text-secondary mb-2">Whitaker Outcomes</h4>
+                <div class="table-responsive">
+                  <table class="data-table text-xs">
+                    <thead><tr><th>Category</th><th>Count</th><th>%</th></tr></thead>
+                    <tbody id="tbody-cohort-whitaker"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- MODALS SECTION -->
+
+    <!-- Modal 1: Surgery Modal -->
+    <div class="modal-backdrop" id="modal-surgery" style="display:none;">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+          <h3 class="modal-title">Log Craniofacial Surgical Procedure</h3>
+          <button class="modal-close-btn" data-close-modal="modal-surgery">&times;</button>
+        </div>
+        <form id="form-modal-surgery">
+          <div class="modal-body">
+            <div class="form-grid grid-cols-2 mb-3">
+              <div class="form-group">
+                <label for="m-surg-date">Surgery Date*</label>
+                <input type="date" id="m-surg-date" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="m-surg-sequence">Procedure Sequence*</label>
+                <select id="m-surg-sequence" class="form-control font-bold">
+                  <option value="Primary Craniofacial Procedure">Primary Craniofacial Procedure</option>
+                  <option value="Redo Surgery / Secondary Vault Expansion">Redo Surgery / Secondary Vault Expansion</option>
+                  <option value="Staged Craniofacial Procedure (Stage 2 / 3)">Staged Craniofacial Procedure (Stage 2 / 3)</option>
+                  <option value="Spring Insertion Procedure">Spring Insertion Procedure</option>
+                  <option value="Spring Removal Procedure">Spring Removal Procedure</option>
+                  <option value="Distractor Insertion Procedure">Distractor Insertion Procedure</option>
+                  <option value="Distractor Removal Procedure">Distractor Removal Procedure</option>
+                  <option value="Secondary Frontoorbital Advancement">Secondary Frontoorbital Advancement</option>
+                  <option value="Secondary Minor Contouring / Bone Grafting">Secondary Minor Contouring / Bone Grafting</option>
+                  <option value="Hardware Removal Alone">Hardware Removal Alone</option>
+                  <option value="Wound Debridement / Re-exploration">Wound Debridement / Re-exploration</option>
+                  <option value="Other Redo / Revision">Other Redo / Revision</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="m-surg-technique">Surgical Technique Category*</label>
+                <select id="m-surg-technique" class="form-control font-bold">
+                  <option value="Open Cranial Vault Remodeling">Open Cranial Vault Remodeling (FOAR / Pi / Total Vault)</option>
+                  <option value="Minimally Invasive / Minimal Access">Minimally Invasive / Minimal Access</option>
+                  <option value="Spring-Assisted Cranioplasty">Spring-Assisted Cranioplasty</option>
+                  <option value="Endoscopy-Assisted Strip Craniectomy">Endoscopy-Assisted Strip Craniectomy</option>
+                  <option value="Helmet Therapy Alone (Orthotic Molding)">Helmet Therapy Alone (Orthotic Molding)</option>
+                  <option value="Distraction Osteogenesis (PVDO / FOAR Distraction)">Distraction Osteogenesis (PVDO / FOAR Distraction)</option>
+                  <option value="Monobloc / Le Fort III Advancement">Monobloc / Le Fort III Advancement</option>
+                  <option value="Other">Other (Please specify below)</option>
+                </select>
+              </div>
+              <div class="form-group" id="group-surg-technique-other">
+                <label for="m-surg-technique-other">If 'Other', please state technique:</label>
+                <input type="text" id="m-surg-technique-other" class="form-control" placeholder="Specify other surgical technique..." />
+              </div>
+
+              <div class="form-group">
+                <label for="m-surg-lead">Lead Craniofacial Surgeon*</label>
+                <input type="text" id="m-surg-lead" class="form-control" required value="Dr G Narenthiran" />
+              </div>
+              <div class="form-group">
+                <label for="m-surg-assisting">Assisting Surgeon(s)</label>
+                <input type="text" id="m-surg-assisting" class="form-control" />
+              </div>
+            </div>
+
+            <!-- Surgeon Operative Narrative -->
+            <div class="form-group mb-3">
+              <label for="m-surg-description">Surgeon's Detailed Operative Description*</label>
+              <textarea id="m-surg-description" class="form-control" rows="4" required placeholder="Describe incision, exposure, osteotomies, bandeau advancement, barrel staving, dural dissection, bone fixation, springs/distractors..."></textarea>
+            </div>
+
+            <!-- Intraoperative Numbers -->
+            <div class="form-grid grid-cols-4 mb-3">
+              <div class="form-group">
+                <label for="m-surg-duration">Operating Time (mins)</label>
+                <input type="number" id="m-surg-duration" class="form-control" placeholder="e.g. 180" />
+              </div>
+              <div class="form-group">
+                <label for="m-surg-ebl">Estimated Blood Loss (mL)</label>
+                <input type="number" id="m-surg-ebl" class="form-control" placeholder="e.g. 120" />
+              </div>
+              <div class="form-group">
+                <label for="m-surg-ebl-pct">% Estimated Blood Volume</label>
+                <input type="text" id="m-surg-ebl-pct" class="form-control font-bold" readonly placeholder="Auto-calc" />
+              </div>
+              <div class="form-group">
+                <label for="m-surg-prbc">PRBC Transfused (mL)</label>
+                <input type="number" id="m-surg-prbc" class="form-control" placeholder="e.g. 100" />
+              </div>
+
+              <div class="form-group">
+                <label for="m-surg-ffp">FFP Transfused (mL)</label>
+                <input type="number" id="m-surg-ffp" class="form-control" placeholder="e.g. 60" />
+              </div>
+              <div class="form-group">
+                <label for="m-surg-cell-saver">Cell Saver Autotransfused (mL)</label>
+                <input type="number" id="m-surg-cell-saver" class="form-control" placeholder="e.g. 40" />
+              </div>
+              <div class="form-group">
+                <label for="m-surg-txa">Tranexamic Acid Used?</label>
+                <select id="m-surg-txa" class="form-control">
+                  <option value="Yes">Yes (Loading + Infusion)</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="m-surg-dural-tear">Dural Tear Encountered?</label>
+                <select id="m-surg-dural-tear" class="form-control font-bold">
+                  <option value="No">No</option>
+                  <option value="Small Primary Repair">Small Primary Suture Repair</option>
+                  <option value="Large Patch / Graft Repair">Large Patch / Graft Repair</option>
+                  <option value="Sagittal Sinus Tear">Sagittal Sinus Tear (Repaired)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Fixation, Hardware & Helmet -->
+            <div class="form-grid grid-cols-3 mb-2">
+              <div class="form-group">
+                <label for="m-surg-fixation">Bone Fixation Method</label>
+                <select id="m-surg-fixation" class="form-control">
+                  <option value="Resorbable Plates and Screws (LactoSorb / SonicWeld)">Resorbable Plates (LactoSorb / SonicWeld)</option>
+                  <option value="Titanium Miniplates / Screws">Titanium Miniplates / Screws</option>
+                  <option value="Wire Sutures">Wire Sutures</option>
+                  <option value="Suture Suspensions Alone">Suture Suspensions Alone</option>
+                  <option value="Springs in Situ">Springs in Situ</option>
+                  <option value="Distractor Hardware in Situ">Distractor Hardware in Situ</option>
+                  <option value="No Fixation (Strip Craniectomy Alone)">No Fixation (Strip Craniectomy Alone)</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="m-surg-spring-details">Spring / Distractor Specifications</label>
+                <input type="text" id="m-surg-spring-details" class="form-control" placeholder="e.g. 2x 10N springs / 30 mm internal distractors" />
+              </div>
+              <div class="form-group">
+                <label for="m-surg-helmet">Post-op Helmet Therapy Planned?</label>
+                <select id="m-surg-helmet" class="form-control">
+                  <option value="No">No</option>
+                  <option value="Yes">Yes (Custom Orthotic Helmet)</option>
+                  <option value="Not Applicable">Not Applicable</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal="modal-surgery">Cancel</button>
+            <button type="submit" class="btn btn-primary font-bold">Save Surgical Procedure</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 2: Neurosurgery MDT Modal -->
+    <div class="modal-backdrop" id="modal-neurosurg" style="display:none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Log Neurosurgical Assessment</h3>
+          <button class="modal-close-btn" data-close-modal="modal-neurosurg">&times;</button>
+        </div>
+        <form id="form-modal-neurosurg">
+          <div class="modal-body">
+            <div class="form-grid grid-cols-2 mb-2">
+              <div class="form-group">
+                <label for="m-ns-date">Assessment Date*</label>
+                <input type="date" id="m-ns-date" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="m-ns-phase">Encounter Phase</label>
+                <select id="m-ns-phase" class="form-control">
+                  <option value="Pre-Operative Assessment">Pre-Operative Assessment</option>
+                  <option value="Early Post-Op Follow-up (0-3m)">Early Post-Op Follow-up (0-3m)</option>
+                  <option value="Intermediate Follow-up (6-12m)">Intermediate Follow-up (6-12m)</option>
+                  <option value="Long-Term Surveillance (>12m)">Long-Term Surveillance (>12m)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-ns-clinician">Clinician Name</label>
+              <input type="text" id="m-ns-clinician" class="form-control" value="Dr G Narenthiran" />
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-ns-icp">ICP & Fontanelle Evaluation</label>
+              <input type="text" id="m-ns-icp" class="form-control" placeholder="e.g. Fontanelle soft, no clinical intracranial hypertension" />
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-ns-fundoscopy">Fundoscopy / Papilloedema</label>
+              <input type="text" id="m-ns-fundoscopy" class="form-control" placeholder="e.g. Clear disc margins, no papilloedema" />
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-ns-chiari">Chiari / Tonsil Position</label>
+              <input type="text" id="m-ns-chiari" class="form-control" placeholder="e.g. Normal tonsillar position / 4 mm descent" />
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-ns-ventricles">Ventricles & CSF Dynamics</label>
+              <input type="text" id="m-ns-ventricles" class="form-control" placeholder="e.g. Normal ventricular size, Evans index 0.24" />
+            </div>
+            <div class="form-group">
+              <label for="m-ns-recs">Neurosurgical Recommendations & Plan</label>
+              <textarea id="m-ns-recs" class="form-control" rows="2"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal="modal-neurosurg">Cancel</button>
+            <button type="submit" class="btn btn-primary font-bold">Save Assessment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 3: Craniofacial / Plastics MDT Modal -->
+    <div class="modal-backdrop" id="modal-cranio" style="display:none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Log Craniofacial / Plastic Surgery Assessment</h3>
+          <button class="modal-close-btn" data-close-modal="modal-cranio">&times;</button>
+        </div>
+        <form id="form-modal-cranio">
+          <div class="modal-body">
+            <div class="form-grid grid-cols-2 mb-2">
+              <div class="form-group">
+                <label for="m-cr-date">Assessment Date*</label>
+                <input type="date" id="m-cr-date" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="m-cr-phase">Encounter Phase</label>
+                <select id="m-cr-phase" class="form-control">
+                  <option value="Pre-Operative Assessment">Pre-Operative Assessment</option>
+                  <option value="Early Post-Op Follow-up (0-3m)">Early Post-Op Follow-up (0-3m)</option>
+                  <option value="Intermediate Follow-up (6-12m)">Intermediate Follow-up (6-12m)</option>
+                  <option value="Long-Term Surveillance (>12m)">Long-Term Surveillance (>12m)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-cr-clinician">Clinician Name</label>
+              <input type="text" id="m-cr-clinician" class="form-control" placeholder="Craniofacial Surgeon" />
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-cr-contour">Forehead & Supraorbital Contour</label>
+              <input type="text" id="m-cr-contour" class="form-control" placeholder="e.g. Symmetrical advancement, smooth bandeau" />
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-cr-midface">Midface Projection & Occlusion</label>
+              <input type="text" id="m-cr-midface" class="form-control" placeholder="e.g. Class I / Class III malocclusion, midface retrusion" />
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-cr-whitaker">Whitaker Stage Estimate</label>
+              <input type="text" id="m-cr-whitaker" class="form-control" placeholder="e.g. Category I / Category II" />
+            </div>
+            <div class="form-group">
+              <label for="m-cr-plan">Craniofacial Surgical Plan / Revisions</label>
+              <textarea id="m-cr-plan" class="form-control" rows="2"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal="modal-cranio">Cancel</button>
+            <button type="submit" class="btn btn-primary font-bold">Save Assessment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 4: Clinical Genetics Modal -->
+    <div class="modal-backdrop" id="modal-genetics" style="display:none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Log Clinical Genetics Consultation</h3>
+          <button class="modal-close-btn" data-close-modal="modal-genetics">&times;</button>
+        </div>
+        <form id="form-modal-genetics">
+          <div class="modal-body">
+            <div class="form-grid grid-cols-2 mb-2">
+              <div class="form-group">
+                <label for="m-gn-date">Consultation Date*</label>
+                <input type="date" id="m-gn-date" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="m-gn-clinician">Clinical Geneticist</label>
+                <input type="text" id="m-gn-clinician" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-gn-syndrome">Clinical Syndromic Impression</label>
+              <input type="text" id="m-gn-syndrome" class="form-control" placeholder="e.g. Crouzon / Pfeiffer / Non-syndromic" />
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-gn-dysmorphology">Dysmorphology Findings</label>
+              <textarea id="m-gn-dysmorphology" class="form-control" rows="2" placeholder="Cranial shape, digits, ears, palpebral fissures, broad thumbs..."></textarea>
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-gn-counseling">Recurrence Risk & Inheritance Counseling</label>
+              <textarea id="m-gn-counseling" class="form-control" rows="2" placeholder="Details of recurrence counseling for parents, de novo vs familial..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal="modal-genetics">Cancel</button>
+            <button type="submit" class="btn btn-primary font-bold">Save Genetics Entry</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 5: Neuropsychology Modal -->
+    <div class="modal-backdrop" id="modal-neuropsych" style="display:none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Log Neuropsychology Assessment</h3>
+          <button class="modal-close-btn" data-close-modal="modal-neuropsych">&times;</button>
+        </div>
+        <form id="form-modal-neuropsych">
+          <div class="modal-body">
+            <div class="form-grid grid-cols-2 mb-2">
+              <div class="form-group">
+                <label for="m-np-date">Assessment Date*</label>
+                <input type="date" id="m-np-date" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="m-np-phase">Phase</label>
+                <select id="m-np-phase" class="form-control">
+                  <option value="Pre-Operative Assessment">Pre-Operative Assessment</option>
+                  <option value="1-Year Post-Op Follow-up">1-Year Post-Op Follow-up</option>
+                  <option value="3-Year Post-Op Follow-up">3-Year Post-Op Follow-up</option>
+                  <option value="School-Age Follow-up">School-Age Follow-up</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-grid grid-cols-2 mb-2">
+              <div class="form-group">
+                <label for="m-np-battery">Battery Used</label>
+                <input type="text" id="m-np-battery" class="form-control" placeholder="e.g. Bayley-4 / WPPSI-IV" />
+              </div>
+              <div class="form-group">
+                <label for="m-np-score">DQ / IQ Score</label>
+                <input type="number" step="0.5" id="m-np-score" class="form-control" placeholder="e.g. 105" />
+              </div>
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-np-motor">Motor & Adaptive Development</label>
+              <textarea id="m-np-motor" class="form-control" rows="2" placeholder="Gross and fine motor milestones, walking, pincer grasp..."></textarea>
+            </div>
+            <div class="form-group">
+              <label for="m-np-language">Language & Communication</label>
+              <textarea id="m-np-language" class="form-control" rows="2" placeholder="Receptive and expressive language development..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal="modal-neuropsych">Cancel</button>
+            <button type="submit" class="btn btn-primary font-bold">Save Assessment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 6: Speech Therapy Modal -->
+    <div class="modal-backdrop" id="modal-speech" style="display:none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Log Speech & Language Therapy Assessment</h3>
+          <button class="modal-close-btn" data-close-modal="modal-speech">&times;</button>
+        </div>
+        <form id="form-modal-speech">
+          <div class="modal-body">
+            <div class="form-grid grid-cols-2 mb-2">
+              <div class="form-group">
+                <label for="m-sp-date">Assessment Date*</label>
+                <input type="date" id="m-sp-date" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="m-sp-therapist">Speech Therapist</label>
+                <input type="text" id="m-sp-therapist" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-sp-feeding">Feeding & Swallowing Function</label>
+              <input type="text" id="m-sp-feeding" class="form-control" placeholder="e.g. Normal oral feeds / thickened fluids" />
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-sp-vpi">Velopharyngeal Competence (VPI)</label>
+              <select id="m-sp-vpi" class="form-control font-bold">
+                <option value="Normal / Competent">Normal / Competent</option>
+                <option value="Borderline Incompetent">Borderline Incompetent</option>
+                <option value="Velopharyngeal Insufficiency (VPI)">Velopharyngeal Insufficiency (VPI)</option>
+                <option value="Not Tested / Infant">Not Tested / Infant</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="m-sp-plan">Hypernasality & Articulation Plan</label>
+              <textarea id="m-sp-plan" class="form-control" rows="2"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal="modal-speech">Cancel</button>
+            <button type="submit" class="btn btn-primary font-bold">Save Assessment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 7: Ophthalmology Modal -->
+    <div class="modal-backdrop" id="modal-ophthalmology" style="display:none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Log Paediatric Ophthalmology Assessment</h3>
+          <button class="modal-close-btn" data-close-modal="modal-ophthalmology">&times;</button>
+        </div>
+        <form id="form-modal-ophthalmology">
+          <div class="modal-body">
+            <div class="form-grid grid-cols-2 mb-2">
+              <div class="form-group">
+                <label for="m-oph-date">Examination Date*</label>
+                <input type="date" id="m-oph-date" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="m-oph-clinician">Ophthalmologist</label>
+                <input type="text" id="m-oph-clinician" class="form-control" />
+              </div>
+            </div>
+            <div class="form-grid grid-cols-2 mb-2">
+              <div class="form-group">
+                <label for="m-oph-va">Visual Acuity</label>
+                <input type="text" id="m-oph-va" class="form-control" placeholder="e.g. Fix and follow OU" />
+              </div>
+              <div class="form-group">
+                <label for="m-oph-hertel">Exorbitism (Hertel, mm)</label>
+                <input type="number" step="0.5" id="m-oph-hertel" class="form-control" placeholder="e.g. 18.0" />
+              </div>
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-oph-strabismus">Strabismus & Eye Movements</label>
+              <input type="text" id="m-oph-strabismus" class="form-control" placeholder="e.g. V-pattern exotropia, inferior oblique overaction" />
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-oph-cornea">Corneal Integrity & Exposure</label>
+              <input type="text" id="m-oph-cornea" class="form-control" placeholder="e.g. Clear / punctate staining / lagophthalmos" />
+            </div>
+            <div class="form-group">
+              <label for="m-oph-oct">Optic Nerve Status / OCT</label>
+              <input type="text" id="m-oph-oct" class="form-control" placeholder="e.g. Crisp margins / RNFL edema" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal="modal-ophthalmology">Cancel</button>
+            <button type="submit" class="btn btn-primary font-bold">Save Assessment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 8: ENT & Airway Modal -->
+    <div class="modal-backdrop" id="modal-airway" style="display:none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Log ENT & Respiratory / Sleep Assessment</h3>
+          <button class="modal-close-btn" data-close-modal="modal-airway">&times;</button>
+        </div>
+        <form id="form-modal-airway">
+          <div class="modal-body">
+            <div class="form-grid grid-cols-2 mb-2">
+              <div class="form-group">
+                <label for="m-aw-date">Assessment Date*</label>
+                <input type="date" id="m-aw-date" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="m-aw-specialist">Specialist Name</label>
+                <input type="text" id="m-aw-specialist" class="form-control" />
+              </div>
+            </div>
+            <div class="form-grid grid-cols-2 mb-2">
+              <div class="form-group">
+                <label for="m-aw-ahi">AHI Score (events/hr)</label>
+                <input type="number" step="0.1" id="m-aw-ahi" class="form-control" placeholder="e.g. 15.0" />
+              </div>
+              <div class="form-group">
+                <label for="m-aw-support">CPAP / Tracheostomy</label>
+                <input type="text" id="m-aw-support" class="form-control" placeholder="e.g. Nasal CPAP at 8 cmH2O" />
+              </div>
+            </div>
+            <div class="form-group mb-2">
+              <label for="m-aw-patency">Upper Airway Patency & Choanal Stenosis</label>
+              <input type="text" id="m-aw-patency" class="form-control" placeholder="e.g. Midface hypoplasia with stertor" />
+            </div>
+            <div class="form-group">
+              <label for="m-aw-plan">Respiratory Management Plan</label>
+              <textarea id="m-aw-plan" class="form-control" rows="2"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal="modal-airway">Cancel</button>
+            <button type="submit" class="btn btn-primary font-bold">Save Assessment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 9: Inpatient Discharge Letter Modal -->
+    <div class="modal-backdrop" id="modal-discharge-letter" style="display:none;">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+          <h3 class="modal-title">Inpatient Craniofacial Discharge Summary</h3>
+          <button class="modal-close-btn" data-close-modal="modal-discharge-letter">&times;</button>
+        </div>
+        <div class="modal-body">
+          <textarea id="preview-discharge-letter-content" class="form-control" rows="18" style="font-family:monospace; font-size:12px;"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="modal-discharge-letter">Close</button>
+          <button type="button" class="btn btn-outline" id="btn-copy-discharge-letter">Copy to Clipboard</button>
+          <button type="button" class="btn btn-primary" id="btn-print-discharge-letter">Print Summary</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 10: Outpatient Clinic Letter Modal -->
+    <div class="modal-backdrop" id="modal-clinic-letter" style="display:none;">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+          <h3 class="modal-title">Multidisciplinary Craniofacial Clinic Letter</h3>
+          <button class="modal-close-btn" data-close-modal="modal-clinic-letter">&times;</button>
+        </div>
+        <div class="modal-body">
+          <textarea id="preview-clinic-letter-content" class="form-control" rows="18" style="font-family:monospace; font-size:12px;"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="modal-clinic-letter">Close</button>
+          <button type="button" class="btn btn-outline" id="btn-copy-clinic-letter">Copy to Clipboard</button>
+          <button type="button" class="btn btn-primary" id="btn-print-clinic-letter">Print Letter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 11: Database Tools Modal -->
+    <div class="modal-backdrop" id="modal-db-operations" style="display:none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Database Maintenance Tools</h3>
+          <button class="modal-close-btn" data-close-modal="modal-db-operations">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="text-sm text-secondary mb-3">
+            Manage your local paediatric craniofacial registry database. All clinical operations are encrypted and persisted safely.
+          </p>
+          <div class="d-flex flex-column gap-2">
+            <button id="btn-clone-db" class="btn btn-outline btn-block text-left">
+              <strong>Export Database Snapshot (JSON)</strong>
+              <div class="text-xs text-muted">Complete full-schema clinical and audit backup.</div>
+            </button>
+            <button id="btn-reset-db-demo" class="btn btn-outline btn-block text-left text-danger">
+              <strong>Reset to Preloaded Clinical Demonstrators</strong>
+              <div class="text-xs text-muted">Restores the 5 standard benchmark cases (Ethan Cooper, Sophia Taylor, Leo Dubois, Maya Patel, Noah Williams).</div>
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="modal-db-operations">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 12: Audit Log Modal -->
+    <div class="modal-backdrop" id="modal-audit-log" style="display:none;">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+          <h3 class="modal-title">Security & Cryptographic Audit Ledger</h3>
+          <button class="modal-close-btn" data-close-modal="modal-audit-log">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive" style="max-height:380px; overflow-y:auto;">
+            <table class="data-table text-xs">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>User</th>
+                  <th>Action</th>
+                  <th>Study ID</th>
+                  <th>Details</th>
+                  <th>Integrity Hash</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-audit-log">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-close-modal="modal-audit-log">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 13: Database Design Schema Modal -->
+    <div class="modal-backdrop" id="modal-database-design" style="display:none;">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+          <h3 class="modal-title">Relational Database Architecture (SQLite Schema)</h3>
+          <button class="modal-close-btn" data-close-modal="modal-database-design">&times;</button>
+        </div>
+        <div class="modal-body">
+          <pre id="schema-sql-display" style="background:var(--bg-secondary); padding:1rem; border-radius:6px; font-size:11px; max-height:400px; overflow-y:auto; color:var(--text-main);"></pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-close-modal="modal-database-design">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 14: User Accounts Modal -->
+    <div class="modal-backdrop" id="modal-user-management" style="display:none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Role-Based Access Control (RBAC) Accounts</h3>
+          <button class="modal-close-btn" data-close-modal="modal-user-management">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="form-create-user" class="mb-4">
+            <h4 class="text-xs font-semibold uppercase text-secondary mb-2">Create New Clinician Account</h4>
+            <div class="form-grid grid-cols-2">
+              <div class="form-group">
+                <label for="f-new-username">Username*</label>
+                <input type="text" id="f-new-username" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="f-new-fullname">Full Name & Title*</label>
+                <input type="text" id="f-new-fullname" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="f-new-password">Password*</label>
+                <input type="password" id="f-new-password" class="form-control" required minlength="6" />
+              </div>
+              <div class="form-group">
+                <label for="f-new-role">Role*</label>
+                <select id="f-new-role" class="form-control font-bold">
+                  <option value="clinician">Clinician (Full Clinical Data Access)</option>
+                  <option value="administrator">Administrator (Full Admin + User Management)</option>
+                  <option value="developer">Developer (System Level)</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm mt-2">Create User Account</button>
+          </form>
+
+          <h4 class="text-xs font-semibold uppercase text-secondary mb-1">Active Accounts</h4>
+          <div class="table-responsive" style="max-height:180px; overflow-y:auto;">
+            <table class="data-table text-xs">
+              <thead><tr><th>Username</th><th>Full Name</th><th>Role</th><th>Actions</th></tr></thead>
+              <tbody id="tbody-users-list"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="modal-user-management">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 15: Change Password Modal -->
+    <div class="modal-backdrop" id="modal-change-password" style="display:none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Change My Password</h3>
+          <button class="modal-close-btn" data-close-modal="modal-change-password">&times;</button>
+        </div>
+        <form id="form-change-password">
+          <div class="modal-body">
+            <div class="form-group mb-2">
+              <label for="f-pwd-current">Current Password*</label>
+              <input type="password" id="f-pwd-current" class="form-control" required />
+            </div>
+            <div class="form-group mb-2">
+              <label for="f-pwd-new">New Password*</label>
+              <input type="password" id="f-pwd-new" class="form-control" required minlength="6" />
+            </div>
+            <div class="form-group">
+              <label for="f-pwd-confirm">Confirm New Password*</label>
+              <input type="password" id="f-pwd-confirm" class="form-control" required minlength="6" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal="modal-change-password">Cancel</button>
+            <button type="submit" class="btn btn-primary">Update Password</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 16: About Modal -->
+    <div class="modal-backdrop" id="modal-about" style="display:none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">About & Attribution</h3>
+          <button class="modal-close-btn" data-close-modal="modal-about">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div style="text-align:center; margin-bottom:1rem;">
+            <div class="text-csf text-xl font-bold">Multidisciplinary Paediatric Craniofacial DB</div>
+            <div class="text-xs text-muted mt-1">Version 1.0.0 &bull; Release 2026</div>
+          </div>
+          <div class="card p-3 border rounded mb-3" style="background:rgba(15,23,42,0.8);">
+            <div class="text-sm font-semibold text-main mb-1">Author & Clinical Architect:</div>
+            <div class="text-xs text-secondary leading-relaxed">
+              <strong>Dr G Narenthiran MB ChB BSc(MedSci)(Hons) MRCS(Ed.) FEBNS FRCS(SN)</strong><br />
+              Consultant Paediatric Neurosurgeon<br />
+              Email: <a href="mailto:g_narenthiran@hotmail.com" style="color:var(--accent-csf);">g_narenthiran@hotmail.com</a><br />
+              Copyright &copy; 2026, Dr G Narenthiran. All rights reserved.
+            </div>
+          </div>
+          <div class="card p-3 border rounded" style="background:rgba(14,165,233,0.06); border-color:var(--accent-csf);">
+            <div class="text-sm font-semibold text-csf mb-1">Dedication:</div>
+            <div class="text-xs text-secondary italic leading-relaxed">
+              "Dedicated with utmost love and gratitude to Mrs Nirmaladevy Ganesalingam BSc."
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-close-modal="modal-about">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 17: RBAC Login Barrier -->
+    <div id="modal-login-barrier" class="login-overlay" style="display:flex;">
+      <div class="login-card">
+        <div class="login-header">
+          <div class="brand-icon mx-auto mb-2" style="width:48px; height:48px; margin:0 auto 0.75rem auto; background:linear-gradient(135deg, #0ea5e9, #6366f1);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+            </svg>
+          </div>
+          <h2 class="login-title">Multidisciplinary Paediatric Craniofacial DB</h2>
+          <p class="login-subtitle">Conceived, designed and tested: Dr G Narenthiran MB ChB BSc(MedSci)(Hons) MRCS(Ed.) FEBNS FRCS(SN)</p>
+          <div class="text-xs text-muted italic mt-1">Dedicated to Mrs Nirmaladevy Ganesalingam BSc</div>
+        </div>
+
+        <form id="form-login" class="login-form">
+          <div class="form-group mb-3">
+            <label for="f-login-username">Username</label>
+            <input type="text" id="f-login-username" class="form-control" required placeholder="admin / developer / clinician" autofocus />
+          </div>
+          <div class="form-group mb-3">
+            <label for="f-login-password">Password</label>
+            <input type="password" id="f-login-password" class="form-control" required placeholder="Enter password" />
+          </div>
+
+          <div id="login-error-msg" class="login-error-alert" style="display:none;">Invalid username or password.</div>
+
+          <button type="submit" class="btn btn-primary btn-block py-2 mt-3 font-semibold" style="width:100%;">
+            Secure Clinical Sign In
+          </button>
+        </form>
+
+        <div class="login-demo-roles">
+          <div class="demo-role-title">Demo User Credentials:</div>
+          <div class="demo-role-badge" onclick="document.getElementById('f-login-username').value='admin'; document.getElementById('f-login-password').value='admin2026!';">
+            <strong>Administrator:</strong> <code>admin</code> / <code>admin2026!</code>
+          </div>
+          <div class="demo-role-badge" onclick="document.getElementById('f-login-username').value='developer'; document.getElementById('f-login-password').value='dev2026!';">
+            <strong>Developer:</strong> <code>developer</code> / <code>dev2026!</code>
+          </div>
+          <div class="demo-role-badge" onclick="document.getElementById('f-login-username').value='clinician'; document.getElementById('f-login-password').value='user2026!';">
+            <strong>Clinician (User):</strong> <code>clinician</code> / <code>user2026!</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/schema.js" type="module"></script>
+  <script src="js/scoring-engines.js" type="module"></script>
+  <script src="js/db-adapter.js"></script>
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "paediatric-craniofacial-db",
+  "version": "1.0.0",
+  "description": "Multidisciplinary Paediatric Craniofacial DB - Dedicated Clinical Registry & Research Database for Simple & Complex Craniosynostosis and Craniofacial Anomalies",
+  "author": "Dr G Narenthiran MB ChB BSc(MedSci)(Hons) MRCS(Ed.) FEBNS FRCS(SN)",
+  "license": "Proprietary",
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "serve": "npx -y serve -l 3000 .",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.1.1",
+    "@tauri-apps/plugin-sql": "^2.1.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.1.0"
+  }
+}
